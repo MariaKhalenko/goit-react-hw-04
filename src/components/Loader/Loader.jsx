@@ -1,7 +1,9 @@
 import { FidgetSpinner } from "react-loader-spinner";
 import css from "./Loader.module.css";
 
-const Loader = () => {
+const Loader = ({ visible }) => {
+  if (!visible) return null;
+
   return (
     <div className={css.loader}>
       <FidgetSpinner

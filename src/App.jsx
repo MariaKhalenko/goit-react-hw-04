@@ -1,4 +1,4 @@
-import { useState, useEffect } from "react";
+import { useState, useEffect, useRef } from "react";
 import axios from "axios";
 import SearchBar from "./components/SearchBar/SearchBar";
 import ImageGallery from "./components/ImageGallery/ImageGallery";
@@ -10,47 +10,37 @@ import { Toaster, toast } from "react-hot-toast";
 import "./App.css";
 
 const App = () => {
-  // Стан для зберігання списку зображень
   const [images, setImages] = useState([]);
-  // Стан для зберігання поточної сторінки результатів
   const [currentPage, setCurrentPage] = useState(1);
-  // Стан для зберігання загальної кількості сторінок результатів
   const [totalPages, setTotalPages] = useState(1);
-  // Стан для зберігання поточного пошукового запиту
   const [searchQuery, setSearchQuery] = useState("");
-  // Стан для відображення помилки
   const [error, setError] = useState(null);
-  // Стан для відображення завантаження основного контенту
   const [mainLoading, setMainLoading] = useState(false);
-  // Стан для відображення завантаження додаткового контенту
   const [loadMoreLoading, setLoadMoreLoading] = useState(false);
-  // Стан для відображення процесу пошуку нових зображень
   const [searching, setSearching] = useState(false);
-  // Стан для зберігання вибраного зображення для модального вікна
   const [selectedImage, setSelectedImage] = useState(null);
-  // Стан для відображення/приховування модального вікна
   const [modalIsOpen, setModalIsOpen] = useState(false);
 
   useEffect(() => {
     if (searchQuery !== "") {
       setMainLoading(true);
-      setError(null); // Очищення помилки перед новим запитом
+      setError(null);
       setSearching(true);
-      // Виконання HTTP-запиту при зміні пошукового запиту або номера сторінки
+
       axios
         .get(
           `https://api.unsplash.com/search/photos?page=${currentPage}&query=${searchQuery}&client_id=j2dKGfoZPwz7_wS0rkmgVXCHfszEyOuHoksVie8iG1Y`
         )
         .then((res) => {
-          // Оновлення списку зображень та загальної кількості сторінок після успішного запиту
           setImages((prevImages) => [...prevImages, ...res.data.results]);
           setTotalPages(res.data.total_pages);
           if (res.data.results.length === 0) {
             toast.error("Nothing was found for your request");
           }
+          scrollToLoadMore();
         })
         .catch((err) => {
-          setError(err); // Зберігання помилки у стані
+          setError(err);
         })
         .finally(() => {
           setMainLoading(false);
@@ -60,11 +50,12 @@ const App = () => {
     }
   }, [searchQuery, currentPage]);
 
-  // Функція для обробки відправки форми пошуку
+  const loadMoreButtonRef = useRef(null);
+
   const handleSubmit = (searchQuery) => {
     if (searchQuery.trim() !== "") {
       setSearchQuery(searchQuery);
-      // Скидання списку зображень та номера сторінки при новому пошуку
+
       setImages([]);
       setCurrentPage(1);
     } else {
@@ -72,56 +63,57 @@ const App = () => {
     }
   };
 
-  // Функція для завантаження додаткових зображень
-  const loadMoreImages = (event) => {
-    event.preventDefault();
+  const loadMoreImages = () => {
     if (currentPage < totalPages) {
       setLoadMoreLoading(true);
       setCurrentPage((prevPage) => prevPage + 1);
     }
   };
 
-  // Функція для відкриття модального вікна з вибраним зображенням
   const openModal = (image) => {
     setSelectedImage(image);
     setModalIsOpen(true);
   };
 
-  // Функція для закриття модального вікна
   const closeModal = () => setModalIsOpen(false);
 
+  const scrollToLoadMore = () => {
+    if (loadMoreButtonRef.current) {
+      loadMoreButtonRef.current.scrollIntoView({
+        behavior: "smooth",
+        block: "end",
+      });
+    }
+  };
   return (
     <div>
-      {/* Компонент рядка пошуку */}
       <SearchBar onSubmit={handleSubmit} />
-      {/* Відображення повідомлення про помилку, якщо воно є */}
+
       <Toaster position="top-right" reverseOrder={false} />
       {error && <ErrorMessage error={error} />}
-      {/* Відображення індикатора завантаження під час виконання запиту */}
+
       {!error && mainLoading ? (
         <Loader />
       ) : (
-        // Відображення галереї зображень при наявності даних і відсутності завантаження
         images.length > 0 && (
           <div>
-            {/* Компонент галереї зображень */}
             <ImageGallery images={images} onImageClick={openModal} />
-            {/* Компонент кнопки "Завантажити ще" */}
+
             {!searching && !loadMoreLoading && currentPage < totalPages && (
-              <LoadMoreBtn onLoadMore={loadMoreImages} />
+              <LoadMoreBtn
+                onLoadMore={loadMoreImages}
+                loadMoreButtonRef={loadMoreButtonRef}
+              />
             )}
           </div>
         )
       )}
 
-      {/* Компонент модального вікна */}
       <ImageModal
         isOpen={modalIsOpen}
-        closeModal={closeModal}
+        onCloseModal={closeModal}
         image={selectedImage}
       />
-
-      {/* Компонент для відображення сповіщень */}
     </div>
   );
 };

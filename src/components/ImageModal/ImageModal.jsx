@@ -3,18 +3,25 @@ import css from "./ImageModal.module.css";
 
 Modal.setAppElement("#root");
 
-const ImageModal = ({ isOpen, image, closeModal }) => {
-  if (!image || !image.urls || !image.urls.regular) {
-    return null;
-  }
+const ImageModal = ({ isOpen, image, onCloseModal }) => {
+  const imageSrc = image && image.imageSrc;
+
   return (
     <Modal
-      overlayClassName={css.backdrop}
-      className={css.modalWindow}
+      // overlayClassName={css.backdrop}
+      className={css.modal}
       isOpen={isOpen}
-      onRequestClose={closeModal}
+      onRequestClose={onCloseModal}
     >
-      <img src={image.urls.regular} alt={image.alt_description} />
+      {imageSrc && (
+        <div className={css.imgModal}>
+          <img
+            className={css.image}
+            src={imageSrc}
+            alt={image && image.alt_description}
+          />
+        </div>
+      )}
     </Modal>
   );
 };
