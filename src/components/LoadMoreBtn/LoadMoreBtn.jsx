@@ -6,12 +6,7 @@ const LoadMoreBtn = ({ onLoadMore }) => {
   };
 
   return (
-    <button
-      className={css.loadMoreBtn}
-      onClick={handleClick}
-      type="button"
-      autoFocus
-    >
+    <button className={css.loadMoreBtn} onClick={handleClick} type="button">
       Load more
     </button>
   );
