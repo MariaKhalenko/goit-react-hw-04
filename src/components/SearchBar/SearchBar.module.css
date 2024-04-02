@@ -1,0 +1,35 @@
+.header {
+    background-color: #000000;
+    border: 1px solid #747373;
+    box-shadow: 10px 15px 19px -4px;
+    text-align: center;
+    padding: 45px 0;
+}
+
+.input {
+    width: 340px;
+    font-size: 18px;
+    border: 1px solid #ffffff;
+    border-radius: 5px;
+    background-color: #e4e4e4;
+    padding: 5px 10px;
+}
+
+.button {
+    border-radius: 8px;
+    padding: 8px;
+    font-size: 15px;
+    font-weight: 600;
+    color: #1a1a1a;
+    background-color: #ebebeb;
+    cursor: pointer;
+    width: 120px;
+    margin-left: auto;
+}
+.button {
+    transition: all 0.3s ease;
+}
+
+.button:active {
+    transform: translateY(4px);
+}

@@ -1,0 +1,20 @@
+.gallery {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
+    gap: 30px;
+    row-gap: 30px;
+    margin: 30px 20px;
+}
+
+.galleryCard {
+    transition: transform .3s;
+    border: 1px solid #000000;
+    border-radius: 6px;
+    overflow: hidden;
+}
+
+.galleryCard:hover,
+.galleryCard:focus {
+    transform: scale(1.05);
+}

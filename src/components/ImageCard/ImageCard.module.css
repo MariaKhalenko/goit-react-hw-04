@@ -1,0 +1,13 @@
+.image {
+    height: 300px;
+    width: 300px;
+    object-fit: cover;
+}
+
+.imageInfo {
+    background-color: #000000;
+    color:#ffffff;
+    display: flex;
+    justify-content: space-between;
+    padding: 10px;
+}
