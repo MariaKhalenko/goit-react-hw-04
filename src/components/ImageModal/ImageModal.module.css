@@ -1,17 +1,27 @@
-    .modalWindow {
-        position: absolute;
-            inset: 40px;
-            border: 1px solid rgb(204, 204, 204);
-            background: rgb(255, 255, 255);
-            overflow: auto;
-            border-radius: 4px;
-            outline: none;
-            padding: 20px;
-        }
+.backdrop {
+position: absolute;
+    inset: 40px;
+    border: 1px solid rgb(204, 204, 204);
+    background: rgb(32, 32, 32);
+    overflow: hidden;
+    border-radius: 6px;
+    outline: none;
+    padding: 20px;
+}
+   
+   
+.modalWindow {
+    position: absolute;
+    inset: 40px;
+    background: rgb(32, 32, 32);
+    border-radius: 4px;
+    outline: none;
+    overflow: hidden;
+    padding: 20px;
+}
 
-.image {
-    width: 100%;
-    object-fit: contain;
-    height: 100%;
-
+.imageModal {
+    height: 800px;
+    width: 800px;
+    object-fit: cover;
 }

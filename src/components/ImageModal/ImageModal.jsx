@@ -8,19 +8,17 @@ const ImageModal = ({ isOpen, image, onCloseModal }) => {
 
   return (
     <Modal
-      // overlayClassName={css.backdrop}
-      className={css.modal}
+      overlayClassName={css.backdrop}
+      className={css.modalWindow}
       isOpen={isOpen}
       onRequestClose={onCloseModal}
     >
       {imageSrc && (
-        <div className={css.imgModal}>
-          <img
-            className={css.image}
-            src={imageSrc}
-            alt={image && image.alt_description}
-          />
-        </div>
+        <img
+          className={css.imageModal}
+          src={imageSrc}
+          alt={image && image.alt_description}
+        />
       )}
     </Modal>
   );

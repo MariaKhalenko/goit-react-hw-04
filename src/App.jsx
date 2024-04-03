@@ -1,4 +1,4 @@
-import { useState, useEffect, useRef } from "react";
+import { useState, useEffect } from "react";
 import axios from "axios";
 import SearchBar from "./components/SearchBar/SearchBar";
 import ImageGallery from "./components/ImageGallery/ImageGallery";
@@ -20,9 +20,6 @@ const App = () => {
   const [searching, setSearching] = useState(false);
   const [selectedImage, setSelectedImage] = useState(null);
   const [modalIsOpen, setModalIsOpen] = useState(false);
-
-  const firstNewImageRef = useRef(null);
-  const loadMoreButtonRef = useRef(null);
 
   useEffect(() => {
     if (searchQuery !== "") {
@@ -92,11 +89,7 @@ const App = () => {
             <ImageGallery images={images} onImageClick={openModal} />
 
             {!searching && !loadMoreLoading && currentPage < totalPages && (
-              <LoadMoreBtn
-                onLoadMore={loadMoreImages}
-                loadMoreButtonRef={loadMoreButtonRef}
-                firstNewImageRef={firstNewImageRef}
-              />
+              <LoadMoreBtn onLoadMore={loadMoreImages} />
             )}
           </div>
         )
