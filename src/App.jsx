@@ -21,6 +21,9 @@ const App = () => {
   const [selectedImage, setSelectedImage] = useState(null);
   const [modalIsOpen, setModalIsOpen] = useState(false);
 
+  const firstNewImageRef = useRef(null);
+  const loadMoreButtonRef = useRef(null);
+
   useEffect(() => {
     if (searchQuery !== "") {
       setMainLoading(true);
@@ -37,7 +40,6 @@ const App = () => {
           if (res.data.results.length === 0) {
             toast.error("Nothing was found for your request");
           }
-          scrollToLoadMore();
         })
         .catch((err) => {
           setError(err);
@@ -49,8 +51,6 @@ const App = () => {
         });
     }
   }, [searchQuery, currentPage]);
-
-  const loadMoreButtonRef = useRef(null);
 
   const handleSubmit = (searchQuery) => {
     if (searchQuery.trim() !== "") {
@@ -77,14 +77,6 @@ const App = () => {
 
   const closeModal = () => setModalIsOpen(false);
 
-  const scrollToLoadMore = () => {
-    if (loadMoreButtonRef.current) {
-      loadMoreButtonRef.current.scrollIntoView({
-        behavior: "smooth",
-        block: "end",
-      });
-    }
-  };
   return (
     <div>
       <SearchBar onSubmit={handleSubmit} />
@@ -103,6 +95,7 @@ const App = () => {
               <LoadMoreBtn
                 onLoadMore={loadMoreImages}
                 loadMoreButtonRef={loadMoreButtonRef}
+                firstNewImageRef={firstNewImageRef}
               />
             )}
           </div>
