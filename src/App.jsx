@@ -16,16 +16,14 @@ const App = () => {
   const [searchQuery, setSearchQuery] = useState("");
   const [error, setError] = useState(null);
   const [mainLoading, setMainLoading] = useState(false);
-  const [loadMoreLoading, setLoadMoreLoading] = useState(false);
-  const [searching, setSearching] = useState(false);
   const [selectedImage, setSelectedImage] = useState(null);
   const [modalIsOpen, setModalIsOpen] = useState(false);
+  const [loadingMore, setLoadingMore] = useState(false);
 
   useEffect(() => {
     if (searchQuery !== "") {
       setMainLoading(true);
       setError(null);
-      setSearching(true);
 
       axios
         .get(
@@ -43,8 +41,7 @@ const App = () => {
         })
         .finally(() => {
           setMainLoading(false);
-          setLoadMoreLoading(false);
-          setSearching(false);
+          setLoadingMore(false);
         });
     }
   }, [searchQuery, currentPage]);
@@ -62,7 +59,7 @@ const App = () => {
 
   const loadMoreImages = () => {
     if (currentPage < totalPages) {
-      setLoadMoreLoading(true);
+      setLoadingMore(true);
       setCurrentPage((prevPage) => prevPage + 1);
     }
   };
@@ -77,24 +74,19 @@ const App = () => {
   return (
     <div>
       <SearchBar onSubmit={handleSubmit} />
-
-      <Toaster position="top-right" reverseOrder={false} />
+      {mainLoading && <Loader />}
+      {images.length > 0 && (
+        <ImageGallery images={images} onImageClick={openModal} />
+      )}
+      {!mainLoading && currentPage < totalPages && (
+        <>
+          <LoadMoreBtn onLoadMore={loadMoreImages} />
+          {loadingMore && <Loader />}
+        </>
+      )}
       {error && <ErrorMessage error={error} />}
 
-      {!error && mainLoading ? (
-        <Loader />
-      ) : (
-        images.length > 0 && (
-          <div>
-            <ImageGallery images={images} onImageClick={openModal} />
-
-            {!searching && !loadMoreLoading && currentPage < totalPages && (
-              <LoadMoreBtn onLoadMore={loadMoreImages} />
-            )}
-          </div>
-        )
-      )}
-
+      <Toaster position="top-right" reverseOrder={false} />
       <ImageModal
         isOpen={modalIsOpen}
         onCloseModal={closeModal}

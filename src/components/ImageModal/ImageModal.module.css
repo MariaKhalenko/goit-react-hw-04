@@ -1,27 +1,22 @@
 .backdrop {
-position: absolute;
-    inset: 40px;
-    border: 1px solid rgb(204, 204, 204);
-    background: rgb(32, 32, 32);
-    overflow: hidden;
-    border-radius: 6px;
-    outline: none;
-    padding: 20px;
+    position: fixed;
+    inset: 2px;
+    display: flex;
+    justify-content: center;
 }
    
    
 .modalWindow {
-    position: absolute;
-    inset: 40px;
-    background: rgb(32, 32, 32);
-    border-radius: 4px;
-    outline: none;
+    position: fixed;
+    top: 40px;
+    bottom: 40px;
     overflow: hidden;
-    padding: 20px;
+    border: 1.5px solid #1a1a1a;
+    border-radius: 8px;
+    box-shadow: 0px 0px 15px 11px;
 }
 
 .imageModal {
-    height: 800px;
-    width: 800px;
-    object-fit: cover;
+    height: 100%;
+    width: 100%;
 }
