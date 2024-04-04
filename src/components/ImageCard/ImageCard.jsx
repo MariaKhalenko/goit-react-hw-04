@@ -10,8 +10,9 @@ const ImageCard = ({ image, onImageClick }) => {
   };
 
   return (
-    <div onClick={() => onImageClick(imageCardInfo)}>
+    <div>
       <img
+        onClick={() => onImageClick(imageCardInfo)}
         className={css.image}
         src={image.urls.small}
         alt={image.alt_description}
